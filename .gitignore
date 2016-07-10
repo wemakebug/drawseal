@@ -1,0 +1,15 @@
+﻿# ignore compiled python files
+*.pyc
+*~
+.idea/
+/db.sqlite3
+*.swp
+upload/media
+migrations
+static/*
+/media/
+!/media/avatar/0
+*.log
+*.log.err
+/appapi/log/*
+/appapi/appdata/*
