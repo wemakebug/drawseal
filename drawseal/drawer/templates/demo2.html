@@ -4,124 +4,158 @@
 
 <head>
 
-<meta charset="gbk">
+<meta charset="UTF-8">
 
-<title>HTML5 Canvas»­Ó¡ÕÂ</title>
+<title>HTML5 Canvasç”»å°ç« </title>
 
 </head>
 
 <body>
 
-<canvas id="canvas" width="200" height="200"></canvas>
-<input type="text" id="companyName" placeholder="ÇëÊäÈëµ¥Î»Ãû³Æ"/>
-<input type="button" value="Ìá½»" onclick="drawSeal()"/>
+<canvas id="canvas" width="1000" height="500"></canvas>
+<br>
+<input type="text" id="companyName" placeholder="è¯·è¾“å…¥å•ä½åç§°"/>
+<input type="text" id="text" placeholder="è¯·è¾“å…¥å°ç« ç±»å‹"/>
+<input type="text" id="code" placeholder="è¯·è¾“å…¥å°ç« ç¼–ç "/>
+<input type="button" value="æäº¤" onclick="drawSeal()"/>
 <script>
     function drawSeal(){
-        var companyName = document.getElementById("companyName").value
+
+        var companyName = document.getElementById("companyName").value;
 
         var canvas = document.getElementById("canvas");
 
         var context = canvas.getContext('2d');
 
-        var text = "XXX×¨ÓÃÕÂ";
+        var text = document.getElementById("text").value;
 
-        //var companyName = "ĞÅÏ¢¹¤³ÌÑ§Ôº";
+        var code = document.getElementById("code").value;
 
-        // »æÖÆÓ¡ÕÂ±ß¿ò
+        var width = 200 / 2;
 
-        var width = canvas.width / 2;
+        var height = 200 / 2;
 
-        var height = canvas.height / 2;
+        context.textBaseline = 'middle';//è®¾ç½®æ–‡æœ¬çš„å‚ç›´å¯¹é½æ–¹å¼
 
-        context.lineWidth = 5;
+        context.textAlign = 'center'; //è®¾ç½®æ–‡æœ¬çš„æ°´å¹³å¯¹å¯¹é½æ–¹å¼
 
-        context.strokeStyle = "#f00";  //ÉèÖÃÑÕÉ«
+        //ç»˜åˆ¶è¾¹æ¡†
+        drawBorder(width,height);
+        //ç»˜åˆ¶å°ç« ç±»å‹
+        drawSealClass(text, width, height);
+        //ç”»äº”è§’æ˜Ÿ
+        create5star(context,width,height-5,20,"#f00",0);
+        //ç»˜åˆ¶ä¸Šéƒ¨æ–‡å­—
+        drawCompanyName(companyName,width,height);
+        //ç»˜åˆ¶åº•éƒ¨ç¼–ç 
+        drawCode(code,width,height);
 
-        context.beginPath();  // beginPath() ¶ªÆúÈÎºÎµ±Ç°¶¨ÒåµÄÂ·¾¶²¢ÇÒ¿ªÊ¼Ò»ÌõĞÂµÄÂ·¾¶¡£Ëü°Ñµ±Ç°µÄµãÉèÖÃÎª (0,0)¡£
+        // ç»˜åˆ¶å°ç« è¾¹æ¡†
+        function drawBorder(width,height){
+            context.lineWidth = 5;
+            context.strokeStyle = "#f00";  //è®¾ç½®é¢œè‰²
+            context.beginPath();  // beginPath() ä¸¢å¼ƒä»»ä½•å½“å‰å®šä¹‰çš„è·¯å¾„å¹¶ä¸”å¼€å§‹ä¸€æ¡æ–°çš„è·¯å¾„ã€‚å®ƒæŠŠå½“å‰çš„ç‚¹è®¾ç½®ä¸º (0,0)ã€‚
+            context.arc(width, height, 90, 0, Math.PI * 2);//åˆ›å»ºåœ†ï¼Œ å®½ã€é«˜ã€åŠå¾„
+            context.stroke();  // å¼€å§‹ç»˜åˆ¶
+        }
+        // ç»˜åˆ¶å°ç« åç§°
+        /**
 
-        context.arc(width, height, 90, 0, Math.PI * 2);//´´½¨Ô²£¬ ¿í¡¢¸ß¡¢°ë¾¶
+        *ç»˜åˆ¶å°ç« çš„ç±»å‹ï¼Œtext
 
-        context.stroke();  // ¿ªÊ¼»æÖÆ
-
-        //»­Îå½ÇĞÇ
-
-        create5star(context,width,height,25,"#f00",0);
-
-        // »æÖÆÓ¡ÕÂÃû³Æ
-
-        //context.font = '20px ËÎÌå';
-
-        context.textBaseline = 'middle';//ÉèÖÃÎÄ±¾µÄ´¹Ö±¶ÔÆë·½Ê½
-
-        context.textAlign = 'center'; //ÉèÖÃÎÄ±¾µÄË®Æ½¶Ô¶ÔÆë·½Ê½
-
-        context.lineWidth=1; // ×ÖÌåµÄ´ÖÏ¸
-
-        //context.strokeStyle = '#f00';
-
-        //context.strokeText(text,width,height+60);
-
-        // »æÖÆÓ¡ÕÂµ¥Î»
-
-        context.translate(width,height);// Æ½ÒÆµ½´ËÎ»ÖÃ,
-
-        context.font = '23px ËÎÌå'
-
-        var count = companyName.length;// ×ÖÊı
-
-        var angle = 4*Math.PI/(3*(count));// ×Ö¼ä½Ç¶È
-
-        var chars = companyName.split("");
-
-        var c;
-
-        for (var i = 0; i < count; i++) {
-
-            c = chars[i];// ĞèÒª»æÖÆµÄ×Ö·û
-
-            if (i == 0) {
-
-                context.rotate(5 * Math.PI / 6+angle/2);
-
-            } else{
-
-                context.rotate(angle);
-
-            }
+        **/
+        function drawSealClass(text,width,height){
 
             context.save();
 
-            context.translate(70, 0);// Æ½ÒÆµ½´ËÎ»ÖÃ,´ËÊ±×ÖºÍxÖá´¹Ö±£¬¹«Ë¾Ãû³ÆºÍ×îÍâÈ¦µÄ¾àÀë
+            context.font = '22px å®‹ä½“';
 
-            context.rotate(Math.PI / 2);// Ğı×ª90¶È,ÈÃ×ÖÆ½ĞĞÓÚxÖá
+            context.lineWidth=1; // å­—ä½“çš„ç²—ç»†
 
-            context.strokeText(c, 0, 0);// ´ËµãÎª×ÖµÄÖĞĞÄµã
+            context.strokeStyle = '#f00';
+
+            context.strokeText(text,width,height+40);
 
             context.restore();
 
         }
 
-        //»æÖÆÎå½ÇĞÇ
+        // ç»˜åˆ¶å°ç« å•ä½
 
         /**
 
-        * ´´½¨Ò»¸öÎå½ÇĞÇĞÎ×´. ¸ÃÎå½ÇĞÇµÄÖĞĞÄ×ø±êÎª(sx,sy),ÖĞĞÄµ½¶¥µãµÄ¾àÀëÎªradius,rotate=0Ê±Ò»¸ö¶¥µãÔÚ¶Ô³ÆÖáÉÏ
+        *ç»˜åˆ¶ä¸Šéƒ¨çš„å•ä½åç§°
 
-        * rotate:ÈÆ¶Ô³ÆÖáĞı×ªrotate»¡¶È
+        **/
+
+        function drawCompanyName(companyName,width,height){
+
+            context.save();
+
+            context.translate(width,height);// å¹³ç§»åˆ°ä¸­å¿ƒç‚¹,
+
+            context.font = '20px å®‹ä½“'
+
+            context.lineWidth=1; // å­—ä½“çš„ç²—ç»†
+
+            var count = companyName.length;// å­—æ•°
+
+            var angle = 4*Math.PI/(3*(count));// å­—é—´è§’åº¦
+
+            var chars = companyName.split("");
+
+            var c;
+
+            for (var i = 0; i < count; i++) {
+
+                c = chars[i];// éœ€è¦ç»˜åˆ¶çš„å­—ç¬¦
+
+                if (i == 0) {
+
+                    context.rotate(5 * Math.PI / 6+angle/2);
+
+                } else{
+
+                    context.rotate(angle);
+
+                }
+
+                context.save();
+
+                context.translate(70, 0);// å¹³ç§»åˆ°æ­¤ä½ç½®,æ­¤æ—¶å­—å’Œxè½´å‚ç›´ï¼Œå…¬å¸åç§°å’Œæœ€å¤–åœˆçš„è·ç¦»
+
+                context.rotate(Math.PI / 2);// æ—‹è½¬90åº¦,è®©å­—å¹³è¡Œäºxè½´
+
+                context.strokeText(c, 0, 0);// æ­¤ç‚¹ä¸ºå­—çš„ä¸­å¿ƒç‚¹
+
+                context.restore();
+
+            }
+            context.restore();
+
+        }
+
+        //ç»˜åˆ¶äº”è§’æ˜Ÿ
+
+        /**
+
+        * åˆ›å»ºä¸€ä¸ªäº”è§’æ˜Ÿå½¢çŠ¶. è¯¥äº”è§’æ˜Ÿçš„ä¸­å¿ƒåæ ‡ä¸º(sx,sy),ä¸­å¿ƒåˆ°é¡¶ç‚¹çš„è·ç¦»ä¸ºradius,rotate=0æ—¶ä¸€ä¸ªé¡¶ç‚¹åœ¨å¯¹ç§°è½´ä¸Š
+
+        * rotate:ç»•å¯¹ç§°è½´æ—‹è½¬rotateå¼§åº¦
 
         */
 
-        function create5star(context, sx, sy, radius, color, rotato) {
+        function create5star(context, sx, sy, radius, color, rotate) {
 
             context.save();
 
             context.fillStyle = color;
 
-            context.translate(sx, sy);//ÒÆ¶¯×ø±êÔ­µã
+            context.translate(sx, sy);//ç§»åŠ¨åæ ‡åŸç‚¹
 
-            context.rotate(Math.PI + rotato);//Ğı×ª
+            context.rotate(Math.PI + rotate);//æ—‹è½¬
 
-            context.beginPath();//´´½¨Â·¾¶
+            context.beginPath();//åˆ›å»ºè·¯å¾„
 
             var x = Math.sin(0);
 
@@ -129,7 +163,7 @@
 
             var dig = Math.PI / 5 * 4;
 
-            for (var i = 0; i < 5; i++) {//»­Îå½ÇĞÇµÄÎåÌõ±ß
+            for (var i = 0; i < 5; i++) {//ç”»äº”è§’æ˜Ÿçš„äº”æ¡è¾¹
 
                 var x = Math.sin(i * dig);
 
@@ -148,6 +182,50 @@
             context.restore();
 
         }
+        /**
+        *ç»˜åˆ¶åº•éƒ¨ç¼–ç 
+        **/
+        function drawCode(code, width, height){
+
+            context.save();
+
+            context.translate(width, height);
+
+            context.font = '11px å®‹ä½“'
+
+            context.lineWidth=1; // å­—ä½“çš„ç²—ç»†
+
+            var count = code.length;// å­—æ•°
+
+            var angle = Math.PI/(2*(count));// å­—é—´è§’åº¦
+
+            var chars = code.split("").reverse();  // å­—ç¬¦åè½¬å–å‡º
+            var chars1 = ""
+            //for (var i = 0; i<count; i++){
+
+            //}
+
+            for (var i = 0; i < count; i++ ){
+                var c = chars[i];
+                if (i==0){
+                    context.rotate(Math.PI/4+angle/2)
+                }else{
+                    context.rotate(angle)
+                }
+
+                context.save();
+
+                context.translate(78, 0);// å¹³ç§»åˆ°æ­¤ä½ç½®,æ­¤æ—¶å­—å’Œxè½´å‚ç›´ï¼Œå…¬å¸åç§°å’Œæœ€å¤–åœˆçš„è·ç¦»
+
+                context.rotate(3*Math.PI / 2);// æ—‹è½¬90åº¦,è®©å­—å¹³è¡Œäºxè½´
+
+                context.strokeText(c, 0, 0);// æ­¤ç‚¹ä¸ºå­—çš„ä¸­å¿ƒç‚¹
+
+                context.restore();
+            }
+            context.restore();
+        }
+
     }
 
 
