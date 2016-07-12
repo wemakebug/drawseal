@@ -12,10 +12,11 @@
 
 <body>
 
-<canvas id="canvas" width="1000" height="500"></canvas>
+<canvas id="canvas" width="200" height="200" style="border: 1px solid #666666;"></canvas>
 <br>
-<input type="text" id="companyName" placeholder="请输入单位名称"/>
-<input type="text" id="text" placeholder="请输入印章类型"/>
+请刷新界面后输入测试文字：<br>
+<input type="text" id="companyName" placeholder="请输入单位名称"/><br>
+<input type="text" id="text" placeholder="请输入印章类型"/><br>
 <input type="text" id="code" placeholder="请输入印章编码"/>
 <input type="button" value="提交" onclick="drawSeal()"/>
 <script>
@@ -52,7 +53,7 @@
 
         // 绘制印章边框
         function drawBorder(width,height){
-            context.lineWidth = 5;
+            context.lineWidth = 4;
             context.strokeStyle = "#f00";  //设置颜色
             context.beginPath();  // beginPath() 丢弃任何当前定义的路径并且开始一条新的路径。它把当前的点设置为 (0,0)。
             context.arc(width, height, 90, 0, Math.PI * 2);//创建圆， 宽、高、半径
@@ -100,7 +101,7 @@
 
             var count = companyName.length;// 字数
 
-            var angle = 4*Math.PI/(3*(count));// 字间角度
+            var angle = 4*Math.PI/(3*(count+1));// 字间角度
 
             var chars = companyName.split("");
 
@@ -112,7 +113,7 @@
 
                 if (i == 0) {
 
-                    context.rotate(5 * Math.PI / 6+angle/2);
+                    context.rotate(5 * Math.PI / 6+angle);
 
                 } else{
 

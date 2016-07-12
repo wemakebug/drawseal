@@ -1,110 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
- <meta charset="UTF-8">
- <title>HTML5 Canvas画印章</title>
- <script type="text/javascript" src="jquery.min.js"></script>
+<meta charset="UTF-8">
+<title>HTML5 Canvas画印章</title>
+<script type="text/javascript" src="jquery.min.js"></script>
 </head>
 <body>
-    <lable style="display: inline-block;margin:50px;font-size: 18px;">印章文字: 
-    <input type="text" id="textname" style="height: 30px;width: 200px;" />
-    </lable>
-    <input type="button" id="changename" value="修改" />
-    <div>
-    
-    <canvas id="canvas" width="800" height="600" style="margin-left: 30px;border: 1px solid #666666;">不支持canvas2</canvas>
-    </div>
-<script>
-  // canvas绘制图像的原点是canvas画布的左上角
-   var canvas = document.getElementById("canvas");  
-   var context = canvas.getContext('2d');
-
-   $("body").on("click","#changename",function(){
-   		drawimagefun();
-   });
-   window.onload=function(){
-   	drawimagefun();
-   }
-	var width = canvas.width;
-    var height = canvas.height;
-// 绘制椭圆 x,y圆心;a,b半径
-	function drawellipse(context, x, y, a, b){
-	   // 椭圆画法
-	   context.strokeStyle="#ff0000";
-	   context.lineWidth = 3;
-	   context.save();
-	   //选择a、b中的较大者作为arc方法的半径参数
-	   var r = (a > b) ? a : b; 
-	   var s=(a > b) ? b : a;
-	   var ratioX = a / r; //横轴缩放比率
-	   var ratioY = b / r; //纵轴缩放比率
-	   context.scale(ratioX, ratioY); //进行缩放（均匀压缩）
-	   context.beginPath();
-	   //从椭圆的左端点开始逆时针绘制
-	   context.moveTo((x + a) / ratioX, y / ratioY);
-	   context.arc(x / ratioX, y / ratioY, r, 0, 2 * Math.PI);
-	   context.closePath();
-	   //均匀压缩法要先恢复在绘制 
-	   context.restore();
-	   context.stroke();
-	}
-// 绘制印章
-	function drawimagefun(){
-		context.clearRect(0,0,800,600);
-		context.translate(0,0);
-		drawellipse(context,width/2,height/2,400,200);
-		drawtextfun();
-		drawnamefun();
-	}
-// 平行文字
-	function drawtextfun(){
-		var text="以升大学生创新实验中心"
-		var widthT =width / 2;
-	    var heightT =height / 2;
-		// 绘制印章名称   
-	    context.font = '18px 宋体';
-	    context.textBaseline = 'middle';
-	    //设置文本的垂直对齐方式
-	    context.textAlign = 'center'; 
-	    //设置文本的水平对对齐方式
-	    context.lineWidth=1;
-	    context.fillStyle = '#f00';
-	    context.save();
-	    context.translate(widthT,heightT+70);// 平移到此位置,
-	    context.scale(1,2);//伸缩要先把远点平移到要写字的位置，然后在绘制文字
-	    context.fillText(text,0,0);//原点已经移动
-	    context.restore();
-	}
-// 围绕文字
-	function drawnamefun(){
-		var companyName="软件"
-		var widthN =width / 2;
-	    var heightN =height / 2;
-		 // 绘制印章单位   
-	    context.translate(widthN,heightN);// 平移到此位置,
-	    context.font = '16px 宋体';
-	    var chars = companyName.split("");
-	    var count=companyName.length;
-	    var c;
-	    // 文字的具体位置坐标，以圆心为原点，往右是x正向，往下是y正向（具体方向自己试着掌握吧）
-	    var lan=[-100,-100,100,-100];
-	   for (var i = 0,j=0; i < count,j<lan.length; i++,j=j+2) {
-	       c = chars[i];// 需要绘制的字符   
-	       context.translate(lan[j], lan[j+1]);
-	       // 重置原点坐标
-	       context.save();//这句一定要有
-	       // 旋转角度算法，要把角度转化为用PI表示的公式才能旋转
-	       if(i==0){
-	       	context.rotate(7*Math.PI / 4);
-	       }else{
-	       	context.rotate(Math.PI / 4);
-	       }
-	       context.scale(1,2);//文字按照1比2伸缩
-	       context.fillText(c, 0, 0);
-	       context.restore();
-	       context.translate(-lan[j], -lan[j+1]);//再将坐标原点放回到圆心  
-	   }
-	}
-</script>
+    <canvas id="canvas" style="border: 1px solid #666666;" height="500" width="800">不支持canvas2</canvas>
+    印章文字:
+    <input id="textname" type="text" style="height: 30px;width: 200px;">
+    <input id="changename" type="button" value="修改">
 </body>
+<script type="text/javascript" src="./../static/js/drawEllipse.js"></script>
 </html>
