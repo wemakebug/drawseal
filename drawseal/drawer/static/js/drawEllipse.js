@@ -1,4 +1,7 @@
-// canvas绘制图像的原点是canvas画布的左上角
+
+/**
+**绘制椭圆形印章
+**/
 
 window.onload=function(){
     var canvas = document.getElementById("canvas");
@@ -39,8 +42,9 @@ window.onload=function(){
 
     // 平行文字
     function drawtextfun(){
-        var text="000000000000";
+        var text="00000000000";
         // 绘制印章名称
+        context.save();
         context.font = '20px 宋体';
         context.textBaseline = 'middle';
         //设置文本的垂直对齐方式
@@ -48,7 +52,6 @@ window.onload=function(){
         //设置文本的水平对对齐方式
         context.lineWidth=1;
         context.fillStyle = '#f00';
-        context.save();
         context.translate(width,height);// 平移到此位置,
         //context.scale(1,2);//伸缩要先把远点平移到要写字的位置，然后在绘制文字
         context.fillText(text,0,0);//原点已经移动
@@ -56,46 +59,49 @@ window.onload=function(){
     }
     // 绘制印章单位
     function drawnamefun(){
-        var companyName="智慧应用"
+        // var companyName="智慧应用软件研发"
         context.save();
         context.translate(width,height);// 平移到中心点,
-        context.font = '20px 宋体'
+        context.font = '18px 宋体'
+        context.textBaseline = 'middle';
+        context.textAlign = 'center';
         context.lineWidth=1; // 字体的粗细
-        var count = companyName.length;// 字数
-        var chars = companyName.split("");
-
-//        var fontCoordinate = [['智',-75,0,3/2],['慧',-33,-50,7/4],['应',33,-50,1/4],['用',75,0,1/2]]
-//        for (var i=0;i<fontCoordinate.length;i++){
-//            angle = fontCoordinate[i][3]*Math.PI  //角度
-//            c = fontCoordinate[i][0];
-//            context.save();
-//            context.rotate(angle);
-//            //context.translate(fontCoordinate[i][2],fontCoordinate[i][3]);// 平移到此位置,此时字和x轴垂直，公司名称和最外圈的距离
-//            alert(fontCoordinate[i][2]+""+fontCoordinate[i][3])
-//            context.strokeText(c,0,0);// 此点为字的中心点
-//            context.restore();
-//        }
-//        context.restore();
-
-        var lan=[-45,-45,45,-45];
-        //var fontCoordinate = [['智',-75,0,3/2],['慧',-33,-50,7/4],['应',33,-50,1/4],['用',75,0,1/2]]
-        for (var i = 0,j=0; i < count,j<lan.length; i++,j=j+2) {
-            c = chars[i];// 需要绘制的字符
-            context.translate(lan[j], lan[j+1]);
+        // var count = companyName.length;// 字数
+        // var chars = companyName.split("");
+        //  [' ', , , ] [0]:所要绘制的字符，[1]:横坐标x方向向右， [2]:纵坐标y方向向下，[3]:字体旋转角度顺时针(字体平行于x轴为0度)
+       var fontCoordinate = [['智',-75,0,3/2],['慧',-65,-26,5/3],['应',-43,-45,37/20],['用',-15,-54,59/30],['软',15,-54,1/30],['件',43,-45,3/20],['研',65,-26,1/3],['发',73,0,1/2]]
+       for (var i = 0,j=0; i < fontCoordinate.length; i++,j=j+2) {
+            angle = fontCoordinate[i][3]*Math.PI  //角度
+            c = fontCoordinate[i][0];// 需要绘制的字符
+            context.translate(fontCoordinate[i][1], fontCoordinate[i][2]);
             // 重置原点坐标
             context.save();//这句一定要有
              //旋转角度算法，要把角度转化为用PI表示的公式才能旋转
-            if(i==0){
-                context.rotate(7*Math.PI / 4);
-            }else{
-                context.rotate(Math.PI / 4);
-            }
+            context.rotate(angle);
             //context.scale(1,2);//文字按照1比2伸缩
             context.strokeText(c, 0, 0);
             context.restore();
-            context.translate(-lan[j], -lan[j+1]);//再将坐标原点放回到圆心
+            context.translate(-fontCoordinate[i][1], -fontCoordinate[i][2]);//再将坐标原点放回到圆心
         }
+        context.restore();
+
+        // var lan=[-73,0,-65,-26,-43,-45,-15,-54,15,-54,43,-45,65,-26,73,0];
+        // var angles = [3/2,5/3,37/20,59/30,1/30,3/20,1/3,1/2]
+        // //var fontCoordinate = [['智',-75,0,3/2],['慧',-33,-50,7/4],['应',33,-50,1/4],['用',75,0,1/2]]
+        // for (var i = 0,j=0; i < count,j<lan.length; i++,j=j+2) {
+        //     angle = angles[i]*Math.PI  //角度
+        //     c = chars[i];// 需要绘制的字符
+        //     context.translate(lan[j], lan[j+1]);
+        //     // 重置原点坐标
+        //     context.save();//这句一定要有
+        //      //旋转角度算法，要把角度转化为用PI表示的公式才能旋转
+        //     context.rotate(angle);
+        //     //context.scale(1,2);//文字按照1比2伸缩
+        //     context.strokeText(c, 0, 0);
+        //     context.restore();
+        //     context.translate(-lan[j], -lan[j+1]);//再将坐标原点放回到圆心
+        // }
+        // context.restore();
     }
-    // 文字的具体位置坐标，以圆心为原点，往右是x正向，往下是y正向（具体方向自己试着掌握吧）
 
 }
