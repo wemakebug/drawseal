@@ -73,12 +73,12 @@ window.onload=function(){
         var fontCoordinate = [['智',-63,-23,0],['慧',-53,-34,0],['应',-43,-44,0],['用',-29,-50,0],['软',-15,-54,0],['件',0,-56,0],['研',15,-54,0],['发',-43,-44,0]]
         $.post("/ellipseFont", function(data){
             var jsonData=$.parseJSON(data);
-            alert(jsonData[0][1])
 
             for (var i = 0,j=0; i < jsonData.length; i++,j=j+2) {
-                alert(jsonData[i][1])
                 angle = fontCoordinate[i][3]*Math.PI  //角度
                 c = fontCoordinate[i][0];// 需要绘制的字符
+                console.log(jsonData[i][0]);
+                console.log(jsonData[i][1]);
                 context.translate(jsonData[i][0], jsonData[i][1]);
                 // 重置原点坐标
                 context.save();//这句一定要有
