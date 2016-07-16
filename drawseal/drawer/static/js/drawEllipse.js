@@ -69,39 +69,46 @@ window.onload=function(){
         // var count = companyName.length;// 字数
         // var chars = companyName.split("");
         //  [' ', , , ] [0]:所要绘制的字符，[1]:横坐标x方向向右， [2]:纵坐标y方向向下，[3]:字体旋转角度顺时针(字体平行于x轴为0度)
-       var fontCoordinate = [['智',-75,0,3/2],['慧',-65,-26,5/3],['应',-43,-45,37/20],['用',-15,-54,59/30],['软',15,-54,1/30],['件',43,-45,3/20],['研',65,-26,1/3],['发',73,0,1/2]]
-       for (var i = 0,j=0; i < fontCoordinate.length; i++,j=j+2) {
-            angle = fontCoordinate[i][3]*Math.PI  //角度
-            c = fontCoordinate[i][0];// 需要绘制的字符
-            context.translate(fontCoordinate[i][1], fontCoordinate[i][2]);
-            // 重置原点坐标
-            context.save();//这句一定要有
-             //旋转角度算法，要把角度转化为用PI表示的公式才能旋转
-            context.rotate(angle);
-            //context.scale(1,2);//文字按照1比2伸缩
-            context.strokeText(c, 0, 0);
-            context.restore();
-            context.translate(-fontCoordinate[i][1], -fontCoordinate[i][2]);//再将坐标原点放回到圆心
-        }
-        context.restore();
+//        var fontCoordinate = [['智',-75,0,3/2],['慧',-65,-26,5/3],['应',-43,-45,37/20],['用',-15,-54,59/30],['软',15,-54,1/30],['件',43,-45,3/20],['研',65,-26,1/3],['发',73,0,1/2]]
+        var fontCoordinate = [['智',-63,-23,0],['慧',-53,-34,0],['应',-43,-44,0],['用',-29,-50,0],['软',-15,-54,0],['件',0,-56,0],['研',15,-54,0],['发',-43,-44,0]]
+        $.post("/ellipseFont", function(data){
+            var jsonData=$.parseJSON(data);
+            alert(jsonData[0][1])
 
-        // var lan=[-73,0,-65,-26,-43,-45,-15,-54,15,-54,43,-45,65,-26,73,0];
-        // var angles = [3/2,5/3,37/20,59/30,1/30,3/20,1/3,1/2]
-        // //var fontCoordinate = [['智',-75,0,3/2],['慧',-33,-50,7/4],['应',33,-50,1/4],['用',75,0,1/2]]
-        // for (var i = 0,j=0; i < count,j<lan.length; i++,j=j+2) {
-        //     angle = angles[i]*Math.PI  //角度
-        //     c = chars[i];// 需要绘制的字符
-        //     context.translate(lan[j], lan[j+1]);
-        //     // 重置原点坐标
-        //     context.save();//这句一定要有
-        //      //旋转角度算法，要把角度转化为用PI表示的公式才能旋转
-        //     context.rotate(angle);
-        //     //context.scale(1,2);//文字按照1比2伸缩
-        //     context.strokeText(c, 0, 0);
-        //     context.restore();
-        //     context.translate(-lan[j], -lan[j+1]);//再将坐标原点放回到圆心
-        // }
-        // context.restore();
+            for (var i = 0,j=0; i < jsonData.length; i++,j=j+2) {
+                alert(jsonData[i][1])
+                angle = fontCoordinate[i][3]*Math.PI  //角度
+                c = fontCoordinate[i][0];// 需要绘制的字符
+                context.translate(jsonData[i][0], jsonData[i][1]);
+                // 重置原点坐标
+                context.save();//这句一定要有
+                 //旋转角度算法，要把角度转化为用PI表示的公式才能旋转
+                context.rotate(angle);
+                //context.scale(1,2);//文字按照1比2伸缩
+                context.strokeText(c, 0, 0);
+                context.restore();
+                context.translate(-jsonData[i][0], -jsonData[i][1]);//再将坐标原点放回到圆心
+                }
+                context.restore();
+
+                // var lan=[-73,0,-65,-26,-43,-45,-15,-54,15,-54,43,-45,65,-26,73,0];
+                // var angles = [3/2,5/3,37/20,59/30,1/30,3/20,1/3,1/2]
+                // //var fontCoordinate = [['智',-75,0,3/2],['慧',-33,-50,7/4],['应',33,-50,1/4],['用',75,0,1/2]]
+                // for (var i = 0,j=0; i < count,j<lan.length; i++,j=j+2) {
+                //     angle = angles[i]*Math.PI  //角度
+                //     c = chars[i];// 需要绘制的字符
+                //     context.translate(lan[j], lan[j+1]);
+                //     // 重置原点坐标
+                //     context.save();//这句一定要有
+                //      //旋转角度算法，要把角度转化为用PI表示的公式才能旋转
+                //     context.rotate(angle);
+                //     //context.scale(1,2);//文字按照1比2伸缩
+                //     context.strokeText(c, 0, 0);
+                //     context.restore();
+                //     context.translate(-lan[j], -lan[j+1]);//再将坐标原点放回到圆心
+                // }
+                // context.restore();
+        })
+
     }
-
 }
