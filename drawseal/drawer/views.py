@@ -34,6 +34,9 @@ def ellipseFont(req):
     :return:
     """
 
+
+    global ELENGTH  # 字间距的平方
+
     def f(xyz):
         """
         方程组
@@ -42,21 +45,27 @@ def ellipseFont(req):
         #尤佳佳改！
         #使用闭包
         """
-        o1 = float(xyz[1])
-        o2 = float(xyz[2])
-        txy = xyz[0]
+        o1 = float(xyz[1])  # 控制变量1
+        o2 = float(xyz[2])  # 控制变量2
+        txy = xyz[0]  # 初始迭代值
 
         def innerf(xy):
             x = float(xy[0])
             y = float(xy[1])
             return [
                 x * x / 4900 + y * y / 3136 - 1,
-                (x + o1) * (x + o1) + (y + o2) * (y + o2) - fontDistance(36, 20, 12, 220),
+                (x - o1) * (x - o1) + (y - o2) * (y - o2) - ELENGTH,
             ]
 
-        c, d = fsolve(innerf, txy)
-        print innerf([c, d])  # 输出误差
-        return c, d
+        for i in range(50):  # 如果误差值始终大于1？
+            c, d = fsolve(innerf, txy)
+            e, f = innerf([c, d])  # 得出误差值
+            if e > 1 and f > 1:  # 误差值大于1则重新计算
+                txy[0] += 1
+                txy[1] += 1
+            else:
+                print innerf([c, d])
+                return c, d
 
 
     def fontDistance(a, b, n, p):
@@ -68,7 +77,47 @@ def ellipseFont(req):
         :param p: 弧度
         :return: 距离的平方
         """
-        return (((2 * math.pi * b + 4 * (a - b)) * p / 360) / (n - 1)) ** 2
+
+        ###
+        ### 角度的计算好像不对
+        ###
+        # return ((3.2*(a-b)*p/(360*(n-1))))**2
+
+        return (((2 * math.pi * b + 4 * (a - b)) * p / (360 * (n-1) ))) ** 2
+
+
+    def hasOne(a, b):
+        """
+        获取一次函数解
+        ##不需要另外求误差的方法
+        """
+        c, d = f([[100-a, 100-b], a, b])
+        return c, d
+
+
+    ELENGTH = fontDistance(36, 20, 12, 220)  # 测试输入的为偶数
+    result = [(0.0, 56.0)]  # 初值
+    for i in range(1,7):  # 循环次数为字体数量的一半
+        result.append(hasOne(abs(result[-1][0]),abs(result[-1][1])))
+        ####
+
+        ####  问题：当循环次数稍大之后，求出的点趋于一个定点！！！
+
+        ####
+    result.reverse()  # 原地反转
+    z = -1  # 控制变量
+    r = []  # 返回的数据承载
+    w = []
+    for j in result:
+        z += 1
+        if z % 2 == 0:  # 去除两个字体之间的点
+            continue
+        r.append([-abs(j[0]), -abs(j[1])])  # y轴左边的点
+        w.append([abs(j[0]), -abs(j[1])])  # y轴右边的点
+    w.reverse()
+    r.extend(w)
+    return HttpResponse(json.dumps(r))
+
     #
     # def verify(x, y, o1, o2):
     #     """
@@ -157,36 +206,3 @@ def ellipseFont(req):
     # #     print words[i]
     # #     result.insert(i+1,[words[i]])
     # #     i += 1
-
-    def hasOne(a, b):
-        """
-        获取一次函数解
-
-        ##不需要另外求误差的方法
-
-        """
-        # for i in range(1,10):
-        #	for j in range(1,10):
-        #		print i,j
-
-        c, d = f([[100, 100], a, b])
-
-        return c, d
-
-    result = [(0.0, -56.0)]  # 初值
-    for i in range(6):  # 循环6次
-        result.append(hasOne(result[-1][0], result[-1][1]))
-        ####
-
-        ####  问题：当循环次数稍大之后，求出的点趋于一个定点！！！
-
-        ####
-    result.reverse()  # 原地反转
-    z = -1  # 控制变量
-    r = []  # 返回的数据承载
-    for j in result:
-        z += 1
-        if z % 2 == 0:  # 取出两个字体之间的点
-            continue
-        r.append([-abs(j[0]), -abs(j[1])])
-    return HttpResponse(json.dumps(r))
