@@ -6,5 +6,5 @@
 #  
 
 
-sudo apt-get install python-pip python-dev libevent-dev build-essential python-setuptools libxml2-dev python-scipy python-Scrapy libxslt-dev;
+sudo apt-get install python-pip python-dev libevent-dev build-essential python-setuptools libxml2-dev python-scipy python-scrapy libxslt-dev;
 sudo pip install numpy pandas

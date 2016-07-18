@@ -87,6 +87,7 @@ window.onload=function(){
                 //context.scale(1,2);//文字按照1比2伸缩
                 context.strokeText(c, 0, 0);
                 context.restore();
+                alert(1)
                 context.translate(-jsonData[i][0], -jsonData[i][1]);//再将坐标原点放回到圆心
                 }
                 context.restore();
