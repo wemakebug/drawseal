@@ -91,13 +91,13 @@ def ellipseFont(req):
         获取一次函数解
         ##不需要另外求误差的方法
         """
-        c, d = f([[100-a, 100-b], a, b])
+        c, d = f([[a+1000, b+1000], a, b])
         return c, d
 
 
     ELENGTH = fontDistance(36, 20, 12, 220)  # 测试输入的为偶数
     result = [(0.0, 56.0)]  # 初值
-    for i in range(1,7):  # 循环次数为字体数量的一半
+    for i in range(1,9):  # 循环次数为字体数量的一半
         result.append(hasOne(abs(result[-1][0]),abs(result[-1][1])))
         ####
 

@@ -11,5 +11,6 @@ static/*
 !/media/avatar/0
 *.log
 *.log.err
+*.out
 /appapi/log/*
 /appapi/appdata/*
