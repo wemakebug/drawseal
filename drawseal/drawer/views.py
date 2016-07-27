@@ -83,7 +83,7 @@ def ellipseFont(req):
         ###
         # return ((3.2*(a-b)*p/(360*(n-1))))**2
 
-        return (((2 * math.pi * b + 4 * (a - b)) * p / (360 * (n-1) ))) ** 2
+        return (((2 * math.pi * b + 4 * (a - b)) * math.pi * p /(360 * (n-1)))) ** 2
 
 
     def hasOne(a, b):
@@ -94,11 +94,12 @@ def ellipseFont(req):
         c, d = f([[a+1000, b+1000], a, b])
         return c, d
 
-
-    ELENGTH = fontDistance(36, 20, 12, 220)  # 测试输入的为偶数
-    result = [(0.0, 56.0)]  # 初值
-    for i in range(1,9):  # 循环次数为字体数量的一半
+    fontNum = 12
+    ELENGTH = fontDistance(45, 20,4*fontNum, 220*1.4)  # 测试输入的为偶数
+    result = [(0.0, -56.0)]  # 初值
+    for i in range(1,fontNum+1):  # 循环次数为字体数量的一半
         result.append(hasOne(abs(result[-1][0]),abs(result[-1][1])))
+        print result
         ####
 
         ####  问题：当循环次数稍大之后，求出的点趋于一个定点！！！
@@ -112,6 +113,12 @@ def ellipseFont(req):
         z += 1
         if z % 2 == 0:  # 去除两个字体之间的点
             continue
+        if fontNum>=10:
+            if z < 4:
+                r.append([-abs(j[0]), abs(j[1])])
+                w.append([abs(j[0]), abs(j[1])])  # y轴右边的点
+                continue
+        # r.append([j[0], j[1]])  # y轴左边的点
         r.append([-abs(j[0]), -abs(j[1])])  # y轴左边的点
         w.append([abs(j[0]), -abs(j[1])])  # y轴右边的点
     w.reverse()
