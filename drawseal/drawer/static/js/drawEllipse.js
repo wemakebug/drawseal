@@ -75,10 +75,10 @@ window.onload=function(){
             var jsonData=$.parseJSON(data);
 
             for (var i = 0,j=0; i < jsonData.length; i++,j=j+2) {
-                angle = fontCoordinate[i][3]*Math.PI  //角度
+                angle = jsonData[i][2]  //角度
                 c = fontCoordinate[i][0];// 需要绘制的字符
-                console.log(jsonData[i][0]);
-                console.log(jsonData[i][1]);
+                // console.log(jsonData[i][0]);
+                // console.log(jsonData[i][1]);
                 context.translate(jsonData[i][0], jsonData[i][1]);
                 // 重置原点坐标
                 context.save();//这句一定要有
